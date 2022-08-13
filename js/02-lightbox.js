@@ -17,16 +17,7 @@ const galleryEl = document.querySelector(".gallery");
 
 galleryEl.insertAdjacentHTML("beforeend", addGallary);
 
-galleryEl.addEventListener("click", onGalleryElClick);
 const lightbox = new SimpleLightbox(".gallery a", {
   captionsData: "alt",
   captionDelay: 250,
 });
-
-function onGalleryElClick(evt) {
-  if (!evt.target.classList.contains("gallery__image")) {
-    return;
-  }
-
-  evt.preventDefault();
-}

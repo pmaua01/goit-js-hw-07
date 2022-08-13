@@ -26,24 +26,34 @@ const galleryEl = document.querySelector(".gallery");
 galleryEl.insertAdjacentHTML("beforeend", addGallary);
 
 galleryEl.addEventListener("click", onGalleryElClick);
+const instance = basicLightbox.create(
+  `
+        <img src="">
+    `,
+  {
+    onShow: (instance) => {
+      window.addEventListener("keydown", onModalEsc);
+    },
+    onclose: (instance) => {
+      window.removeEventListener("keydown", onModalEsc);
+    },
+  }
+);
 
 function onGalleryElClick(evt) {
   if (!evt.target.classList.contains("gallery__image")) {
     return;
   }
-  console.log("Click");
+
   evt.preventDefault();
   const UrlBigImg = evt.target.dataset.source;
-  const instance = basicLightbox.create(`
-        <img src="${UrlBigImg}">
-    `);
+  instance.element().querySelector("img").src = UrlBigImg;
   instance.show();
+}
 
-  galleryEl.addEventListener("keydown", (evt) => {
-    console.log("keydown");
-    const visible = basicLightbox.visible();
-    if (visible && evt.code === "Escape") {
-      instance.close();
-    }
-  });
+function onModalEsc(evt) {
+  if (evt.code === "Escape") {
+    console.log("press esc");
+    instance.close();
+  }
 }
